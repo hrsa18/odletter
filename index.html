@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Letter Generator</title>
+    <style>
+        /* Add your CSS styling here */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0; /* Light gray background */
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #1E90FF; /* Royal blue header */
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff; /* White container background */
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #4CAF50; /* Green button */
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+
+        #letter {
+            font-size: 14px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            white-space: pre-wrap;
+        }
+
+        /* Custom styles for the header and button */
+        .header-text {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .btn-generate {
+            background-color: #1E90FF; /* Royal blue button */
+            color: #fff;
+        }
+
+        .btn-generate:hover {
+            background-color: #0073e6; /* Darker blue on hover */
+        }
+
+        .btn-download {
+            background-color: #ff4500; /* Orange button */
+            color: #fff;
+        }
+
+        .btn-download:hover {
+            background-color: #e63900; /* Darker orange on hover */
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="header-text"> Letter Generator</h1>
+    </header>
+    <div class="container">
+        <strong>Select CONVENOR NAME:</strong>
+        <input type="checkbox" id="harsha" value="Harsha Malla"> Harsha Malla
+        <input type="checkbox" id="siddharth" value="Siddharth S"> Siddharth S
+        <input type="checkbox" id="abhiram" value="Abhiram Kondapalli"> Abhiram Kondapalli<br><br>
+
+        <label for="eventName">Event Name:</label>
+        <input type="text" id="eventName">
+
+        <label for="collegeName">College Name:</label>
+        <input type="text" id="collegeName">
+
+        <label for="fromDate">From Date:</label>
+        <input type="date" id="fromDate">
+
+        <label for="toDate">To Date:</label>
+        <input type="date" id="toDate">
+
+        <label>Select DEAN NAME:</label>
+        <select id="dean" name="dean">
+            <option value="E&T">College Of Engineering And Technology</option>
+            <option value="Management">School Of Management</option>
+            <option value="Humanities">College Of Science And Humanities</option>
+            <option value="Pharmacy">School Of Pharmacy</option>
+        </select>
+
+        <button class="btn-generate" onclick="generateLetter()">Generate Letter</button>
+        <a id="downloadLink" class="btn-download" style="display: none" download="request_letter.txt">Download Letter</a>
+
+        <div id="letter"></div>
+    </div>
+
+    <script>
+        function formatDate(dateString) {
+            const options = { day: 'numeric', month: 'long', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString(undefined, options);
+        }
+
+        function getCurrentDate() {
+            const currentDate = new Date();
+            return formatDate(currentDate);
+        }
+
+        function generateLetter() {
+            const selectedConvenors = [];
+
+            if (document.getElementById('harsha').checked) {
+                selectedConvenors.push("Harsha Malla");
+            }
+            if (document.getElementById('siddharth').checked) {
+                selectedConvenors.push("Siddharth S");
+            }
+            if (document.getElementById('abhiram').checked) {
+                selectedConvenors.push("Abhiram Kondapalli");
+            }
+
+            const eventName = document.getElementById('eventName').value;
+            const collegeName = document.getElementById('collegeName').value;
+            const fromDate = formatDate(document.getElementById('fromDate').value);
+            const toDate = formatDate(document.getElementById('toDate').value);
+            
+            const deanSelect = document.getElementById('dean');
+            const selectedDean = deanSelect.options[deanSelect.selectedIndex].value;
+            const deanText = deanSelect.options[deanSelect.selectedIndex].text;
+
+            const currentDate = getCurrentDate();
+
+            const letter = `
+
+                                                                                                                                        ${currentDate}
+From
+${selectedConvenors.join('\n')}
+Movies and Dramatics Club Convenors
+Directorate of Student Affairs
+
+
+
+Through
+The Associate Director Directorate of Student Affairs
+SRM Institute of Science and Technology
+
+
+
+To
+The Dean
+${deanText}
+
+Respected Sir/Ma’am,
+
+Subject: Requesting permission for On Duty and Permission for the students who are participating in the intercollege competition.
+
+
+The Directorate of Student Affairs Movies and Dramatics Club is requesting On Duty to the mentioned list of students, for the reason that the respective students are participating in the annual cultural program "${eventName}" conducted by "${collegeName}" from ${fromDate} to ${toDate}.
+Requesting you to please give On Duty (OD) permission to the following students.
+
+
+Herewith attaching the respective document.
+
+Thanking you in anticipation,
+
+
+
+
+Yours sincerely,
+${selectedConvenors.join('\n')}
+DSA Movies and Dramatics Club Convenors
+Directorate of Student Affairs
+8017264613,8008133375,6369690 264
+`;
+
+            // Display the generated letter
+            const letterElement = document.getElementById('letter');
+            letterElement.innerHTML = letter; // Use innerHTML to render HTML content
+
+            // Create a Blob with the letter text and create a download link
+            const blob = new Blob([letter], { type: 'text/plain' });
+            const downloadLink = document.getElementById('downloadLink');
+            downloadLink.href = URL.createObjectURL(blob);
+            downloadLink.style.display = 'block';
+        }
+
+        // Your existing JavaScript functions
+
+        function generateLetterAndAutoDownload() {
+            generateLetter(); // Generate the letter first
+
+            // Automatically click the download button after 6 seconds
+            setTimeout(function () {
+                const downloadLink = document.getElementById('downloadLink');
+                downloadLink.click();
+            }, 6000); // 6000 milliseconds (6 seconds)
+        }
+
+        // Update the button's onclick handler to call generateLetterAndAutoDownload
+        document.querySelector('.btn-generate').addEventListener('click', generateLetterAndAutoDownload);
+    </script>
+</body>
+</html>
